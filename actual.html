@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Betting Tool</title>
+<!-- Mobile viewport optimized -->
+	<meta name="viewport" content="width=device-width">
+<!-- CSS -->
+    <link href="files/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+<!--Scripts-->
+ 	<script src="files/jquery-1.11.3.js" type="text/javascript"></script>
+ 	<script src="files/bootstrap.js" type="text/javascript"></script>
+<!--My own Scripts-->
+ 	<script src="js/script.js" type="text/javascript"></script>
+<style>
+.CSSTableGenerator {
+	margin:0px;padding:0px;
+	width:100%;
+	-moz-border-radius-bottomleft:9px;
+	-webkit-border-bottom-left-radius:9px;
+	border-bottom-left-radius:9px;
+	
+	-moz-border-radius-bottomright:9px;
+	-webkit-border-bottom-right-radius:9px;
+	border-bottom-right-radius:9px;
+	
+	-moz-border-radius-topright:9px;
+	-webkit-border-top-right-radius:9px;
+	border-top-right-radius:9px;
+	
+	-moz-border-radius-topleft:9px;
+	-webkit-border-top-left-radius:9px;
+	border-top-left-radius:9px;
+}.CSSTableGenerator table{
+    border-collapse: collapse;
+        border-spacing: 0;
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}.CSSTableGenerator tr:last-child td:last-child {
+	-moz-border-radius-bottomright:9px;
+	-webkit-border-bottom-right-radius:9px;
+	border-bottom-right-radius:9px;
+}
+.CSSTableGenerator table tr:first-child td:first-child {
+	-moz-border-radius-topleft:9px;
+	-webkit-border-top-left-radius:9px;
+	border-top-left-radius:9px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+	-moz-border-radius-topright:9px;
+	-webkit-border-top-right-radius:9px;
+	border-top-right-radius:9px;
+}.CSSTableGenerator tr:last-child td:first-child{
+	-moz-border-radius-bottomleft:9px;
+	-webkit-border-bottom-left-radius:9px;
+	border-bottom-left-radius:9px;
+}.CSSTableGenerator tr:hover td{
+	
+}
+.CSSTableGenerator tr:nth-child(odd){ background-color:#aad4ff; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+	vertical-align:middle;
+	border:1px solid #005fbf;
+	border-width:0px 1px 1px 0px;
+	text-align:left;
+	padding:6px;
+	font-size:16px;
+	font-family:Helvetica;
+	font-weight:normal;
+	color:#000000;
+}.CSSTableGenerator tr:last-child td{
+	border-width:0px 1px 0px 0px;
+}.CSSTableGenerator tr td:last-child{
+	border-width:0px 0px 1px 0px;
+}.CSSTableGenerator tr:last-child td:last-child{
+	border-width:0px 0px 0px 0px;
+}
+.CSSTableGenerator tr:first-child td{
+		background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+	background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");	background: -o-linear-gradient(top,#005fbf,003f7f);
+	background-color:#005fbf;
+	border:0px solid #005fbf;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:15px;
+	font-family:Helvetica;
+	font-weight:bold;
+	color:#ffffff;
+}
+.CSSTableGenerator tr:first-child:hover td{
+	background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+	background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");	background: -o-linear-gradient(top,#005fbf,003f7f);
+
+	background-color:#005fbf;
+}
+.CSSTableGenerator tr:first-child td:first-child{
+	border-width:0px 0px 1px 0px;
+}
+.CSSTableGenerator tr:first-child td:last-child{
+	border-width:0px 0px 1px 1px;
+}
+</style>
+ <script>
+
+
+
+//localStorage.setItem("itemArray", itemArray);
+// Retrieve
+//document.getElementById("result").innerHTML = localStorage.getItem("itemArray");
+
+$(document).ready(function() {
+//loading global functions
+if(localStorage.getItem("betArray")==null){
+	localStorage.setItem("betArray", "");
+}
+if(localStorage.getItem("competatorArray")==null){
+	localStorage.setItem("competatorArray", "");
+}
+
+if(localStorage.getItem("betArray") !== "" ){
+//loadBets();
+}
+if(localStorage.getItem("actualArray") !== ""){
+loadCompetators();
+loadBets();
+}
+resultCompetators();
+
+
+//Storing and retrieving part::
+// Store
+var competatorArray = [];
+var betArray = [];
+var actualArray = [];
+
+
+function loadBets(){
+
+
+
+ 	betArray = JSON.parse(localStorage.getItem("betArray"));
+
+ 	actualArray = JSON.parse(localStorage.getItem("actualArray"));
+
+ 	console.log(betArray);
+ 	console.log(actualArray);
+ 	document.getElementById("generated_bet_content").innerHTML = "";
+
+for(var i =0; i < betArray.length;i++){
+
+	var tmp = $('<div/>', {class:"CSSTableGenerator"}).appendTo('#generated_bet_content');
+	$('<h4/>', {class:"",text:betArray[i].alias}).appendTo(tmp);
+	$('<table/>', {id:"table_"+i,style:"width: 90%;margin-left:auto;margin-right:auto; margin-bottom: 15px;"}).appendTo(tmp);
+
+//class="CSSTableGenerator"
+	//thats values we have
+	//betArray[i].alias
+	var table = document.getElementById("table_"+i);
+	for(var g =0; g < betArray[i].bets.length;g++){
+	//betArray[i].bets[g].name
+	//betArray[i].bets[g].distance
+	if(g==0){
+	var row = table.insertRow(0);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	cell1.innerHTML = "Name";
+	cell2.innerHTML = "Prediction in Km";
+}
+	var row = table.insertRow(g+1);
+// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+
+	//highlighting cells
+	//cell1.style = "color:red";
+
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ STARTING LOGIC FOR COMPERATIONS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+	console.log(actualArray);
+	if(actualArray !== null&&actualArray !== ""&&actualArray !== undefined){
+	  
+
+	  if(parseFloat(betArray[i].bets[g].distance) == parseFloat(actualArray[g].distance)){
+	  	cell1.style = "background-color:green; color:white";
+	  	cell2.style = "background-color:green; color:white";
+	  }
+	  else if(parseFloat(betArray[i].bets[g].distance) <= parseFloat(actualArray[g].distance) -1  && parseFloat(betArray[i].bets[g].distance) >= parseFloat(actualArray[g].distance) +1 ){
+	  	cell1.style = "background-color:yellow; color:black";
+	  	cell2.style = "background-color:yellow; color:black";
+
+	  }
+	  else{
+	  	cell1.style = "background-color:red; color:white";
+	  	cell2.style = "background-color:red; color:white";
+	  }
+
+	}
+
+// Add some text to the new cells:
+cell1.innerHTML = betArray[i].bets[g].name;
+cell2.innerHTML = betArray[i].bets[g].distance;
+
+	}
+}
+
+ 	//assembling result tables::
+ }
+function loadCompetators(){
+
+if(localStorage.getItem("actualArray")==""||localStorage.getItem("actualArray")==null){
+actualArray = [];
+}
+
+
+
+// Find a <table> element with id="myTable":
+
+actualArray = JSON.parse(localStorage.getItem("actualArray"));
+
+if(actualArray == null){
+	actualArray = "";
+}
+
+console.log("we have");
+console.log(actualArray);
+	
+	var table = document.getElementById("table_with_competators");
+	table.innerHTML = "";
+for(var i =0; i < actualArray.length;i++){
+
+if(i==0){
+	var row = table.insertRow(0);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+
+	cell1.innerHTML = "Name";
+	cell2.innerHTML = "Prediction in Km";
+}
+
+var row = table.insertRow(i+1);
+// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+var cell1 = row.insertCell(0);
+var cell2 = row.insertCell(1);
+
+// Add some text to the new cells:
+cell1.innerHTML = actualArray[i].name;
+cell2.innerHTML = actualArray[i].distance;
+
+}
+
+
+//generated_competator_content
+}
+function resultCompetators(){
+competatorArray = JSON.parse(localStorage.getItem("competatorArray"));
+console.log(competatorArray);
+for(var i =0; i < competatorArray.length;i++){
+
+//GENERATE FIELDS FOR INPUTS
+
+
+var tmp = $('<div/>', {class:"form-group"}).appendTo('#generated_competator_content');
+
+$('<label/>', {class:'col-sm-9 control-label', for:"id_competator_"+i, text:competatorArray[i].name}).appendTo(tmp);
+
+var tmp1 = $('<div/>', {class:'col-sm-3'}).appendTo(tmp);
+
+$('<input/>', {class:'form-control', id:"id_competator_"+i, placeholder: "Value in Km"
+                    }).appendTo(tmp1);
+
+}
+
+}
+
+//if button add bet is clicked::
+$("#add_bet").click(function(){
+
+if(localStorage.getItem("actualArray")!==""){
+actualArray = JSON.parse(localStorage.getItem("actualArray"));
+}
+else{
+	actualArray = [];
+}
+
+//getting all inf ofrom comp fields
+
+var tempObject =[];
+
+competatorArray = JSON.parse(localStorage.getItem("competatorArray"));
+for(var i =0; i < competatorArray.length;i++){
+		//if any of fields empty
+		var bet = $("#id_competator_"+i).val();
+
+		if(bet=="") {alert("Please input info in all fields");return;}
+
+		tempObject.push({name:competatorArray[i].name, distance:bet});
+
+		//tempObject.bets.push($("#id_competator_"+i).val());
+}
+actualArray = tempObject;
+
+//almost last step
+localStorage.setItem("actualArray", JSON.stringify(tempObject));
+
+$('#add_real_modal').modal('hide');
+
+//refreshing bets
+
+loadBets();
+loadCompetators();
+alert("Data Populated");
+
+});
+
+});//finishing onload sectioon
+
+</script>
+
+</head>
+<body>
+<div class="container color_background nopad">
+
+<img class="banner center-block"src="img/banner.png"/>
+<nav class="navbar navbar-default navbar-inverse default_nav">
+	<div class="container-fluid">
+<!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand text_decor_brand" href="#">
+      	Your Best Guess
+      </a>
+
+    </div>	
+ <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav nav-pills navbar-right">
+  <li id="home"role="presentation" ><a href="index.html">Betting List</a></li>
+  <li id="start"role="presentation" class="active"><a href="actual.html">Actual distances ran</a></li>
+  <li id="about"role="presentation"><a href="#">About</a></li>
+</ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+<div class="container">
+	</div>
+	
+	<!-- COMPETATOR SECTION -->
+
+
+	<div class="container topmar color">
+	<div class="col-md-12">
+
+
+		<div class="custom1 center-block color_box">
+			<a class="btn btn-info" href="#add_real_modal" data-toggle="modal"><h4>Populate list with real data</h4></a>
+			<h3 class="text-center">List of actuall results:</h3>
+
+
+
+<div class="CSSTableGenerator" >
+                <table id='table_with_competators'style='width: 90%;margin-left:auto;margin-right:auto; margin-bottom: 15px;'>
+
+                </table>
+            </div>
+           
+		</div>
+		</div>
+		</div>
+
+		<!-- BET SECTION HERE -->
+
+		<div class="container topmar color">
+		<div class="col-md-12">
+		<div class="custom1 center-block color_box">
+			<h3 class="text-center">Comparing results:</h3>
+
+			<div id='generated_bet_content'></div>
+		</div>
+		</div>
+		</div>
+
+						<!-- Add Bet Modal -->
+    		 <!-- Modal -->
+    <div class="modal fade" id="add_real_modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+              <legend class="">Actual Results:</legend>
+<form class="form-horizontal">
+  <div id='generated_competator_content'>
+  </div>
+</form>
+
+        <button id='add_bet' type="submit" class="btn btn-success">Populate results</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<footer class="text-center">
+	Deniss Strods 2016 C.
+<br/>
+</footer>
+</div>
+
+</body>
+</html>

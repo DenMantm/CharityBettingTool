@@ -1,0 +1,3 @@
+		 <a class="btn btn-info" href="#signup_modal" data-toggle="modal"><h4><i class="glyphicon glyphicon-eye-open"></i>Signup</h4></a>
+		
+<a class="btn btn-success" href="#login_modal" data-toggle="modal"><h4><i class="glyphicon glyphicon-eye-open"></i>Login</h4></a>
